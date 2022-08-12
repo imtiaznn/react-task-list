@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import TaskList from './TaskList';
 
 function App() {
+  const [list, setList] = useState([]);
+  const taskRef = useRef();
+
+  function add() {
+    const name = taskRef.current.value;
+    if (name !== '') {
+      setList((prevList) => {
+        return [...prevList, { id: uuidv4(), desc: name, complete: false }];
+      });
+    }
+    taskRef.current.value = '';
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <TaskList list={list} />
+      <input ref={taskRef} type='text' />
+      <button onClick={add}>Add</button>
+      <button>Clear</button>
+      <div>0 left to do</div>
     </div>
   );
 }
