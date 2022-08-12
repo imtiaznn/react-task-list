@@ -10,7 +10,11 @@ function App() {
 
   useEffect(() => {
     const storedList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    if (storedList) setList(storedList);
+    if (storedList) {
+      setList((prevList) => {
+        return [...prevList, ...storedList];
+      });
+    }
   }, []);
 
   useEffect(() => {
